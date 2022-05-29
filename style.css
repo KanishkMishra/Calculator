@@ -42,6 +42,10 @@
     border-radius: 10px;
 }
 
+.select {
+    background-color: lightsalmon;
+}
+
 .num {
     background-color: blue;
 }

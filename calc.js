@@ -1,6 +1,8 @@
 let displayValue = "";
 let prev = "";
+let change = false;
 let operation = "";
+
 
 // Operations
 function add(a, b) {
@@ -42,12 +44,22 @@ function operate(a, b, operator) {
 // update numbers within screen
 const numbers = document.querySelectorAll('.num').forEach(num => {
     num.addEventListener('click', () => {
-        addDisplay(num.textContent);
+        if (change==false)  addDisplay(num.textContent);
+        else                updateDisplay(num.textContent);
+        change=false;
     });
 });
 
-function addDisplay(num) {
+function addDisplay(num) {//add digit
     displayValue += "" + num; // record display
+
+    const screen = document.querySelector('.screen');
+    screen.textContent = displayValue;
+}
+
+function updateDisplay(num) {//new number
+    prev = displayValue;
+    displayValue = num; // record display
 
     const screen = document.querySelector('.screen');
     screen.textContent = displayValue;
@@ -56,11 +68,11 @@ function addDisplay(num) {
 // run operators
 const operators = document.querySelectorAll('.op').forEach(op => {
     op.addEventListener('click', () => {
-        prev = displayValue;
+        change=true;
+
+        if(operation!="") updateDisplay(operate(prev, displayValue, operation));
 
         operation = op.textContent;
-
-        updateDisplay("");
     });
 });
 
@@ -68,13 +80,6 @@ const operators = document.querySelectorAll('.op').forEach(op => {
 const equal = document.querySelector('.equal').addEventListener('click', () => {
     updateDisplay(operate(prev, displayValue, operation));
 });
-
-function updateDisplay(num) {
-    displayValue = num; // record display
-
-    const screen = document.querySelector('.screen');
-    screen.textContent = displayValue;
-}
 
 //clear
 const clear = document.querySelector('.clear').addEventListener('click', () => {
