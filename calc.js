@@ -1,4 +1,6 @@
-let displayValue = 0;
+let displayValue = "";
+let prev = "";
+let operation = "";
 
 // Operations
 function add(a, b) {
@@ -38,11 +40,45 @@ function operate(a, b, operator) {
 }
 
 // update numbers within screen
-const numbers = document.querySelectorAll('button').forEach(num => {
+const numbers = document.querySelectorAll('.num').forEach(num => {
     num.addEventListener('click', () => {
-        displayValue = num.textContent;
-
-        const screen = document.querySelector('.screen');
-        screen.textContent = displayValue;
+        addDisplay(num.textContent);
     });
+});
+
+function addDisplay(num) {
+    displayValue += "" + num; // record display
+
+    const screen = document.querySelector('.screen');
+    screen.textContent = displayValue;
+}
+
+// run operators
+const operators = document.querySelectorAll('.op').forEach(op => {
+    op.addEventListener('click', () => {
+        prev = displayValue;
+
+        operation = op.textContent;
+
+        updateDisplay("");
+    });
+});
+
+// run equation
+const equal = document.querySelector('.equal').addEventListener('click', () => {
+    updateDisplay(operate(prev, displayValue, operation));
+});
+
+function updateDisplay(num) {
+    displayValue = num; // record display
+
+    const screen = document.querySelector('.screen');
+    screen.textContent = displayValue;
+}
+
+//clear
+const clear = document.querySelector('.clear').addEventListener('click', () => {
+    updateDisplay("");
+    prev="";
+    operation="";
 });
